@@ -1,9 +1,23 @@
-import React from 'react';
-import { Grid, Paper, Typography } from '@mui/material';
+import React, { FormEvent, useState } from 'react';
+import {
+  Grid,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Modal,
+} from '@mui/material';
 import { styled } from '@mui/system';
+import LayerComponent from './Layer';
+import VerticalLetters from './VerticalLetters';
+import HorizontalNumbers from './HorizontalNumbers';
+
+const GridAndFormWrapper = styled('div')({
+  position: 'relative',
+});
 
 const CustomPaper = styled(Paper)({
-  border: '1px dashed white',
+  border: '1px dashed black',
   width: 50,
   height: 50,
   display: 'flex',
@@ -19,7 +33,7 @@ const VerticalLine = styled('div')({
   top: 0,
   right: 0,
   height: '100%',
-  borderRight: '8px solid white',
+  borderRight: '8px solid black',
 });
 
 const HorizontalLine = styled('div')({
@@ -27,30 +41,54 @@ const HorizontalLine = styled('div')({
   bottom: 0,
   left: 0,
   width: '100%',
-  borderBottom: '8px solid white',
+  borderBottom: '8px solid black',
 });
 
 const Word = styled(Typography)({
   position: 'absolute',
-  color: 'white',
+  color: 'black',
   fontWeight: 'bold',
 });
 
-const Layer = styled('div')({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  zIndex: 1,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-});
-
 const GridExample = () => {
+  const [avatarPositions, setAvatarPositions] = useState<{
+    [key: string]: string;
+  }>({});
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState({ row: 0, col: 0 });
+  const [nameInput, setNameInput] = useState('');
+
+  const handleGridItemClick = (row: number, col: number) => {
+    setSelectedPosition({ row, col });
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setNameInput('');
+  };
+
+  const handleNameInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNameInput(event.target.value);
+  };
+
+  const handleModalSubmit = () => {
+    setAvatarPositions({
+      ...avatarPositions,
+      [`${selectedPosition.row}-${selectedPosition.col}`]: nameInput,
+    });
+    handleModalClose();
+  };
+
+  const handleClearNames = () => {
+    setAvatarPositions({});
+  };
   return (
-    <div style={{ position: 'relative' }}>
+    <GridAndFormWrapper>
+      <VerticalLetters />
+      <HorizontalNumbers />
       <Grid container spacing={0} style={{ margin: 0, padding: 0 }}>
         {[...Array(10)].map((_, rowIndex) => (
           <Grid
@@ -67,111 +105,46 @@ const GridExample = () => {
                 xs={1}
                 style={{ margin: 0, padding: 0 }}
               >
-                <CustomPaper style={{ width: 85, height: 85 }}>
+                <CustomPaper
+                  style={{ width: 85, height: 85 }}
+                  onClick={() => handleGridItemClick(rowIndex, colIndex)}
+                >
                   {colIndex === 4 && <VerticalLine />}
                   {rowIndex === 4 && <HorizontalLine />}
+                  {avatarPositions[`${rowIndex}-${colIndex}`] && (
+                    <Word>{avatarPositions[`${rowIndex}-${colIndex}`]}</Word>
+                  )}
                 </CustomPaper>
               </Grid>
             ))}
           </Grid>
         ))}
       </Grid>
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(-50%)' }}>
-        <Word>Interessante</Word>
-      </Layer>
 
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(-45%)' }}>
-        <Word>A</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(-35%)' }}>
-        <Word>B</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(-25%)' }}>
-        <Word>C</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(-15%)' }}>
-        <Word>D</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(-5%)' }}>
-        <Word>E</Word>
-      </Layer>
-
-      <Layer style={{ bottom: -40, left: -70, transform: 'translateY(52%)' }}>
-        <Word>Desinteressante</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(8%)' }}>
-        <Word>F</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(15%)' }}>
-        <Word>G</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(25%)' }}>
-        <Word>H</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(35%)' }}>
-        <Word>I</Word>
-      </Layer>
-
-      <Layer style={{ top: -20, left: -70, transform: 'translateY(45%)' }}>
-        <Word>J</Word>
-      </Layer>
-
-      <Layer style={{ top: 10, transform: 'translateX(35%)' }}>
-        <Word>Bom</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(-6%)' }}>
-        <Word>6</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(2%)' }}>
-        <Word>7</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(10%)' }}>
-        <Word>8</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(18%)' }}>
-        <Word>9</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(27%)' }}>
-        <Word>10</Word>
-      </Layer>
-
-      <Layer style={{ top: 10, transform: 'translateX(-52%)' }}>
-        <Word>Ruim</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(-14%)' }}>
-        <Word>5</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(-22%)' }}>
-        <Word>4</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(-31%)' }}>
-        <Word>3</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(-39%)' }}>
-        <Word>2</Word>
-      </Layer>
-
-      <Layer style={{ top: 25, transform: 'translateX(-46%)' }}>
-        <Word>1</Word>
-      </Layer>
-    </div>
+      <div>
+        <Modal open={modalOpen} onClose={handleModalClose}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              backgroundColor: 'white',
+              padding: 20,
+            }}
+          >
+            <TextField
+              label="Nome"
+              value={nameInput}
+              onChange={handleNameInputChange}
+              autoFocus // Adicionando para focar automaticamente no campo ao abrir o modal
+            />
+            <Button onClick={handleModalSubmit}>Salvar</Button>
+          </div>
+        </Modal>
+      </div>
+      <Button onClick={handleClearNames}>Limpar Nomes</Button>
+    </GridAndFormWrapper>
   );
 };
 
