@@ -11,6 +11,8 @@ import { styled } from '@mui/system';
 import LayerComponent from './Layer';
 import VerticalLetters from './VerticalLetters';
 import HorizontalNumbers from './HorizontalNumbers';
+import { NorthWord, SouthWord } from './NorthAndSouthWord';
+import { EastWord, WestWord } from './EastAndWestWord';
 
 const GridAndFormWrapper = styled('div')({
   position: 'relative',
@@ -86,65 +88,71 @@ const GridExample = () => {
     setAvatarPositions({});
   };
   return (
-    <GridAndFormWrapper>
-      <VerticalLetters />
-      <HorizontalNumbers />
-      <Grid container spacing={0} style={{ margin: 0, padding: 0 }}>
-        {[...Array(10)].map((_, rowIndex) => (
-          <Grid
-            key={rowIndex}
-            item
-            xs={12}
-            container
-            style={{ margin: 0, padding: 0 }}
-          >
-            {[...Array(10)].map((_, colIndex) => (
-              <Grid
-                key={colIndex}
-                item
-                xs={1}
-                style={{ margin: 0, padding: 0 }}
-              >
-                <CustomPaper
-                  style={{ width: 85, height: 85 }}
-                  onClick={() => handleGridItemClick(rowIndex, colIndex)}
+    <div>
+      <GridAndFormWrapper>
+        <NorthWord />
+        <SouthWord />
+        <EastWord />
+        <WestWord />
+        <VerticalLetters />
+        <HorizontalNumbers />
+        <Grid container spacing={0} style={{ margin: 0, padding: 0 }}>
+          {[...Array(10)].map((_, rowIndex) => (
+            <Grid
+              key={rowIndex}
+              item
+              xs={12}
+              container
+              style={{ margin: 0, padding: 0 }}
+            >
+              {[...Array(10)].map((_, colIndex) => (
+                <Grid
+                  key={colIndex}
+                  item
+                  xs={1}
+                  style={{ margin: 0, padding: 0 }}
                 >
-                  {colIndex === 4 && <VerticalLine />}
-                  {rowIndex === 4 && <HorizontalLine />}
-                  {avatarPositions[`${rowIndex}-${colIndex}`] && (
-                    <Word>{avatarPositions[`${rowIndex}-${colIndex}`]}</Word>
-                  )}
-                </CustomPaper>
-              </Grid>
-            ))}
-          </Grid>
-        ))}
-      </Grid>
+                  <CustomPaper
+                    style={{ width: 85, height: 85 }}
+                    onClick={() => handleGridItemClick(rowIndex, colIndex)}
+                  >
+                    {colIndex === 4 && <VerticalLine />}
+                    {rowIndex === 4 && <HorizontalLine />}
+                    {avatarPositions[`${rowIndex}-${colIndex}`] && (
+                      <Word>{avatarPositions[`${rowIndex}-${colIndex}`]}</Word>
+                    )}
+                  </CustomPaper>
+                </Grid>
+              ))}
+            </Grid>
+          ))}
+        </Grid>
 
-      <div>
-        <Modal open={modalOpen} onClose={handleModalClose}>
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: 'white',
-              padding: 20,
-            }}
-          >
-            <TextField
-              label="Nome"
-              value={nameInput}
-              onChange={handleNameInputChange}
-              autoFocus // Adicionando para focar automaticamente no campo ao abrir o modal
-            />
-            <Button onClick={handleModalSubmit}>Salvar</Button>
-          </div>
-        </Modal>
-      </div>
+        <div>
+          <Modal open={modalOpen} onClose={handleModalClose}>
+            <div
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                backgroundColor: 'white',
+                padding: 20,
+              }}
+            >
+              <TextField
+                label="Nome"
+                value={nameInput}
+                onChange={handleNameInputChange}
+                autoFocus // Adicionando para focar automaticamente no campo ao abrir o modal
+              />
+              <Button onClick={handleModalSubmit}>Salvar</Button>
+            </div>
+          </Modal>
+        </div>
+      </GridAndFormWrapper>
       <Button onClick={handleClearNames}>Limpar Nomes</Button>
-    </GridAndFormWrapper>
+    </div>
   );
 };
 

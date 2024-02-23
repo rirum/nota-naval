@@ -1,10 +1,12 @@
 'use client';
 import GridExample from '@/components/Grid';
 import { styled } from '@mui/system';
+import GlobalCSS from './global';
 
 export default function Home() {
   return (
     <Background>
+      <GlobalCSS />
       <ContainerGrid>
         <GridExample></GridExample>
       </ContainerGrid>
@@ -24,5 +26,5 @@ const Background = styled('div')({
 const ContainerGrid = styled('div')({
   width: '1000px',
   height: '1000px',
-  marginTop: '50px',
+  marginTop: '80px',
 });
