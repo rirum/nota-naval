@@ -4,12 +4,12 @@ import { Typography } from '@mui/material';
 
 const NumberWrapper = styled('div')({
   position: 'absolute',
-  top: '50%', // Posicionando no meio verticalmente
-  left: '50%', // Posicionando no meio horizontalmente
-  transform: 'translate(-50%, -50%)', // Centralizando no meio
+  top: -25,
+  bottom: 20,
+  left: 10, // Ajuste a posição da letra verticalmente conforme necessário
   display: 'flex',
+  width: '80%',
   justifyContent: 'space-between',
-  alignItems: 'center',
 });
 
 const Number = styled(Typography)({

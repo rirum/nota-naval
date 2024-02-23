@@ -4,12 +4,12 @@ import { Typography } from '@mui/material';
 
 const LetterWrapper = styled('div')({
   position: 'absolute',
-  top: 0,
-  bottom: 0,
-  left: -25, // Ajuste a posição da letra verticalmente conforme necessário
+  top: -10,
+  bottom: 20,
+  left: -15, // Ajuste a posição da letra verticalmente conforme necessário
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
+  justifyContent: 'space-around',
   alignItems: 'center',
 });
 
