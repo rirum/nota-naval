@@ -51,6 +51,13 @@ const Word = styled(Typography)({
   fontWeight: 'bold',
 });
 
+const AvatarImage = styled('img')({
+  width: '40px',
+  height: '40px',
+  marginRight: '5px',
+  borderRadius: '50%',
+});
+
 const GridExample = () => {
   const [avatarPositions, setAvatarPositions] = useState<{
     [key: string]: string[];
@@ -87,24 +94,24 @@ const GridExample = () => {
     handleModalClose();
   };
 
-  const handleClearNames = () => {
+  const handleClearImages = () => {
     setAvatarPositions({});
   };
 
-  const handleDeleteName = (name: string) => {
+  const handleDeleteImage = (index: number) => {
     const { row, col } = selectedPosition;
     const positionKey = `${row}-${col}`;
-    const updatedNames = avatarPositions[positionKey].filter(
-      (avatarName) => avatarName !== name
+    const updatedImages = avatarPositions[positionKey].filter(
+      (_, i) => i !== index
     );
-    if (updatedNames.length === 0) {
+    if (updatedImages.length === 0) {
       const newAvatarPositions = { ...avatarPositions };
       delete newAvatarPositions[positionKey];
       setAvatarPositions(newAvatarPositions);
     } else {
       setAvatarPositions({
         ...avatarPositions,
-        [positionKey]: updatedNames,
+        [positionKey]: updatedImages,
       });
     }
   };
@@ -140,21 +147,42 @@ const GridExample = () => {
                   >
                     {colIndex === 4 && <VerticalLine />}
                     {rowIndex === 4 && <HorizontalLine />}
-                    {avatarPositions[`${rowIndex}-${colIndex}`] &&
-                      avatarPositions[`${rowIndex}-${colIndex}`].map(
-                        (name, index) => (
-                          <Word
-                            key={index}
-                            style={{
-                              top:
-                                index % 2 === 0 ? index * 15 : (index - 1) * 15,
-                              left: index % 2 === 0 ? 0 : 40,
-                            }}
-                          >
-                            {name}
-                          </Word>
-                        )
-                      )}
+                    {avatarPositions[`${rowIndex}-${colIndex}`] && (
+                      <>
+                        {avatarPositions[`${rowIndex}-${colIndex}`]
+                          .slice(0, 2)
+                          .map((imageUrl, index) => (
+                            <AvatarImage
+                              key={index}
+                              src={imageUrl}
+                              alt={`Avatar ${index}`}
+                              style={{
+                                position: 'absolute',
+                                top: index === 0 ? 0 : 45,
+                                left: index === 0 ? 0 : 45,
+                              }}
+                              onClick={() => handleDeleteImage(index)}
+                            />
+                          ))}
+                        {avatarPositions[`${rowIndex}-${colIndex}`]?.length >=
+                          4 &&
+                          avatarPositions[`${rowIndex}-${colIndex}`]
+                            .slice(0, 4)
+                            .map((imageUrl, index) => (
+                              <AvatarImage
+                                key={index}
+                                src={imageUrl}
+                                alt={`Avatar ${index + 2}`}
+                                style={{
+                                  position: 'absolute',
+                                  top: index < 2 ? 0 : 45,
+                                  left: index % 2 === 0 ? 0 : 45,
+                                }}
+                                onClick={() => handleDeleteImage(index + 2)}
+                              />
+                            ))}
+                      </>
+                    )}
                   </CustomPaper>
                 </Grid>
               ))}
@@ -185,16 +213,7 @@ const GridExample = () => {
           </Modal>
         </div>
       </GridAndFormWrapper>
-      <Button onClick={handleClearNames}>Limpar Nomes</Button>
-      {avatarPositions[`${selectedPosition.row}-${selectedPosition.col}`] &&
-        avatarPositions[`${selectedPosition.row}-${selectedPosition.col}`].map(
-          (name, index) => (
-            <div key={index}>
-              <Typography>{name}</Typography>
-              <Button onClick={() => handleDeleteName(name)}>Deletar</Button>
-            </div>
-          )
-        )}
+      <Button onClick={handleClearImages}>Limpar Nomes</Button>
     </div>
   );
 };
