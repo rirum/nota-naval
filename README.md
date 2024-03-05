@@ -9,3 +9,8 @@ Este projeto foi feito para praticar frontend utilizando Material UI e React.
 ### Screenshots e deploy
 
 Em breve
+
+### to be done
+- layout melhorado (inclusão de imagem da capa e/ou título da mídia).
+- persistência de dados
+- deploy 
